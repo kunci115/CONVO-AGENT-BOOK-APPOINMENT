@@ -10,7 +10,7 @@ def load_appointments():
 def save_appointments(appointments):
     appointments.to_csv('appointments.csv', index=False)
 
-def check_current_date(input_date_str):
+def possible_date(input_date_str):
     print(input_date_str)
 
     # Parse the input date string into a datetime object
@@ -21,10 +21,21 @@ def check_current_date(input_date_str):
     
     # Compare the input date with the current date
     if input_date < now:
-        return "Day already passed, impossible to book"
+        return f"Todayy is {now} and {input_date} Day already passed, impossible to book"
     else:
         return "Booking is possible"
     
+def load_relative_schedule():
+    appointments = load_appointments()
+    not_available = []
+    for index, row in appointments.iterrows():
+        # if row['date'] == date and row['time'] == time:
+        #     return "Requested time is not available"
+        not_available.append([row['date'], row['time']])
+    if len(not_available)>0:
+        return f"Time that has been booked : {not_available}"
+    return "No time is booked"
+
 def check_availability(date, time):
     appointments = load_appointments()
     for index, row in appointments.iterrows():

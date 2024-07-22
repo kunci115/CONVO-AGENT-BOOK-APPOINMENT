@@ -1,8 +1,9 @@
+import datetime
 import os
 from openai import AzureOpenAI
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from dotenv import load_dotenv
-from booking.process import book_appointment, query_appointment_by_email, check_availability, check_current_date
+from booking.process import book_appointment, query_appointment_by_email, check_availability, possible_date, load_relative_schedule
 import json
 
 # Load environment variables
@@ -14,7 +15,7 @@ client = AzureOpenAI(
     api_key=os.getenv("OPENAI_API_KEY"),
     api_version="2024-02-01",
 )
-
+current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 tools = [
     {
         "type": "function",
@@ -46,6 +47,18 @@ tools = [
                     }
                 },
                 "required": ["date", "time", "phone_number", "email", "user_name"],
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "load_relative_schedule",
+            "description": "check schedule for relative query",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
             }
         }
     },
@@ -91,7 +104,7 @@ tools = [
         {
         "type": "function",
         "function": {
-            "name": "check_current_date",
+            "name": "possible_date",
             "description": "check booking date,year and time is not bellow current date and time",
             "parameters": {
                 "type": "object",
@@ -112,7 +125,8 @@ available_functions = {
     "book_appointment": book_appointment,
     "check_availability": check_availability,
     "query_appointment_by_email": query_appointment_by_email,
-    "check_current_date": check_current_date
+    "possible_date": possible_date,
+    "load_relative_schedule": load_relative_schedule,
 }
 
 def get_response_from_openai(messages, available_functions):
