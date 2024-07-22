@@ -30,9 +30,9 @@ A conversational booking agent powered by GPT-4o, designed to handle appointment
     ```
 
 ### Server and Console UI
-- **Simple Server**: Wrap your agent in a simple web server exposing a `/chat` POST endpoint. This endpoint will always receive the latest message. Refer to `api.yml` for the API definition.
+- **Simple Server**: The agent is wrapped by endpoint `/chat` POST method. This endpoint will always receive the latest message.
   
-- **Console UI**: Provide a console loop that allows a user to chat with your agent and book an appointment.
+- **Console UI**: Providing console UI for added feature client test
 
 ## Usage
 
