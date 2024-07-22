@@ -2,7 +2,7 @@ import os
 from openai import AzureOpenAI
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from dotenv import load_dotenv
-from booking.process import book_appointment, query_appointment_by_email, check_availability
+from booking.process import book_appointment, query_appointment_by_email, check_availability, check_current_date
 import json
 
 # Load environment variables
@@ -24,54 +24,99 @@ tools = [
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "date": {"type": "string", "description": "YYYY-MM-DD"},
-                    "time": {"type": "string", "description": "HH:MM"},
-                    "phone_number": {"type": "string", "description": "User's phone number"},
-                    "email": {"type": "string", "description": "User's email address"},
-                    "user_name": {"type": "string", "description": "User's name"}
+                    "date": {
+                        "type": "string",
+                        "description": "The date of the appointment (YYYY-MM-DD)",
+                    },
+                    "time": {
+                        "type": "string",
+                        "description": "The time of the appointment (HH:MM)",
+                    },
+                    "phone_number": {
+                        "type": "string",
+                        "description": "Information about the user booking the appointment",
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email address to send the confirmation to",
+                    },
+                    "user_name": {
+                        "type": "string",
+                        "description": "detail info about user name"
+                    }
                 },
                 "required": ["date", "time", "phone_number", "email", "user_name"],
             }
         }
     },
-    {
+        {
         "type": "function",
         "function": {
             "name": "check_availability",
-            "description": "Check appointment slot",
+            "description": "check appointment slot",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "date": {"type": "string", "description": "YYYY-MM-DD"},
-                    "time": {"type": "string", "description": "HH:MM"},
+                    "date": {
+                        "type": "string",
+                        "description": "The date of the appointment (YYYY-MM-DD)",
+                    },
+                    "time": {
+                        "type": "string",
+                        "description": "The time of the appointment (HH:MM)",
+                    },
                 },
                 "required": ["date", "time"],
             }
         }
     },
-    {
+    
+            {
         "type": "function",
         "function": {
             "name": "query_appointment_by_email",
-            "description": "Check previous appointment by email",
+            "description": "check previous appointment by their email",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "email": {"type": "string", "description": "User's email address"},
+                    "email": {
+                        "type": "string",
+                        "description": "the email in system while their book the appointment",
+                    }
                 },
                 "required": ["email"],
             }
         }
     },
+        {
+        "type": "function",
+        "function": {
+            "name": "check_current_date",
+            "description": "check booking date,year and time is not bellow current date and time",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "input_date_str": {
+                        "type": "string",
+                        "description": "format  %Y-%m-%d %H:%M:%S",
+                    }
+                },
+                "required": ["input_date_str"],
+            }
+        }
+    },
 ]
+
 
 available_functions = {
     "book_appointment": book_appointment,
-    "check_availability": check_availability
+    "check_availability": check_availability,
+    "query_appointment_by_email": query_appointment_by_email,
+    "check_current_date": check_current_date
 }
 
 def get_response_from_openai(messages, available_functions):
-    model = os.getenv['CHAT_COMPLETIONS_DEPLOYMENT_NAME']
+    model = os.environ['CHAT_COMPLETIONS_DEPLOYMENT_NAME']
     response = client.chat.completions.create(
         model=model,
         messages=messages,

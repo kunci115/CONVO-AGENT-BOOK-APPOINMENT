@@ -2,8 +2,8 @@ from typing import Dict, List
 from fastapi import FastAPI, Request, HTTPException
 from pydantic import BaseModel
 import json
-from main import system_prompt, available_functions
-from main import get_response_from_openai
+from main import system_prompt
+from tools import get_response_from_openai, available_functions
 
 app = FastAPI()
 

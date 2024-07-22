@@ -2,7 +2,7 @@
 # Main loop
 from main import get_user_input
 from main import system_prompt
-from main import available_functions
+from tools import available_functions
 from tools import get_response_from_openai
 
 

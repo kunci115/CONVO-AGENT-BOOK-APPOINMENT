@@ -1,3 +1,4 @@
+import datetime
 import os
 import pandas as pd
 
@@ -9,6 +10,21 @@ def load_appointments():
 def save_appointments(appointments):
     appointments.to_csv('appointments.csv', index=False)
 
+def check_current_date(input_date_str):
+    print(input_date_str)
+
+    # Parse the input date string into a datetime object
+    input_date = datetime.datetime.strptime(input_date_str, "%Y-%m-%d %H:%M:%S")
+    
+    # Get the current date and time
+    now = datetime.datetime.now()
+    
+    # Compare the input date with the current date
+    if input_date < now:
+        return "Day already passed, impossible to book"
+    else:
+        return "Booking is possible"
+    
 def check_availability(date, time):
     appointments = load_appointments()
     for index, row in appointments.iterrows():
