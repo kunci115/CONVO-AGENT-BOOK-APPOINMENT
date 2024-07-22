@@ -6,7 +6,8 @@ max_requests_jitter = 50
 
 log_file = "-"
 
-bind = "0.0.0.0:3100"
+bind = "0.0.0.0:3000"
 
 worker_class = "uvicorn.workers.UvicornWorker"
-workers = (multiprocessing.cpu_count() * 2) + 1
+# workers = (multiprocessing.cpu_count() * 2) + 1
+workers = (multiprocessing.cpu_count() * 1) + 1

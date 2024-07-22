@@ -24,10 +24,6 @@ httpx==0.27.0
 idna==3.7
 itsdangerous==2.2.0
 Jinja2==3.1.4
-kivy-deps.angle==0.4.0
-kivy-deps.glew==0.3.1
-kivy-deps.sdl2==0.7.0
-Kivy-Garden==0.1.5
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 mdurl==0.1.2
@@ -47,10 +43,8 @@ pydantic-settings==2.3.3
 pydantic_core==2.18.4
 Pygments==2.18.0
 PyJWT==2.8.0
-pypiwin32==223
 python-dotenv==1.0.1
 python-multipart==0.0.9
-pywin32==306
 PyYAML==6.0.1
 requests==2.32.3
 rich==13.7.1
@@ -70,5 +64,4 @@ watchfiles==0.22.0
 websockets==12.0
 pandas
 uvicorn
-fastapi
 gunicorn
