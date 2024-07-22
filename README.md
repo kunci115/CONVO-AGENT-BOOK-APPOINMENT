@@ -29,12 +29,6 @@ A conversational booking agent powered by GPT-4o, designed to handle appointment
     pip install -r requirements.txt
     ```
 
-### Simplicity is Key
-Focus on building a straightforward agent to solve the booking problem. While innovative approaches are encouraged, the primary goal is to demonstrate effective problem-solving with a balance between functionality and user experience.
-
-### Model and Library Choice
-Feel free to use any libraries and models that you prefer to enhance your agent's capabilities.
-
 ### Server and Console UI
 - **Simple Server**: Wrap your agent in a simple web server exposing a `/chat` POST endpoint. This endpoint will always receive the latest message. Refer to `api.yml` for the API definition.
   
