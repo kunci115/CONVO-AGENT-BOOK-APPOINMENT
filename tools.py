@@ -4,17 +4,29 @@ from openai import AzureOpenAI
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from dotenv import load_dotenv
 from booking.process import book_appointment, query_appointment_by_email, check_availability, possible_date, load_relative_schedule
+from openai import OpenAI
 import json
 
 # Load environment variables
 load_dotenv()
+REAL_OR_NO = os.getenv("REAL_OR_NO")
 
-# Azure OpenAI configuration
-client = AzureOpenAI(
-    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
-    api_key=os.getenv("OPENAI_API_KEY"),
-    api_version="2024-02-01",
-)
+try:
+    # Azure OpenAI configuration
+    if REAL_OR_NO.lower() == "real":
+        client = AzureOpenAI(
+            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+            api_key=os.getenv("OPENAI_API_KEY"),
+            api_version="2024-02-01",
+        )
+    else:
+        client = OpenAI(
+            base_url=os.getenv("LOCAL_OPENAI_ENDPOINT"),
+            api_key='ollama',  # required, but unused
+        )
+
+except:
+    print("Please Define your endpoint")
 current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 tools = [
     {
